@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# NAS path to CROCO output files for archiving
+outputhis="/home/NAS/CROCO/OUTPUT/Dublin/FC/HISTORY/"
+outputavg="/home/NAS/CROCO/OUTPUT/Dublin/FC/AVERAGES/"
+outputstn="/home/NAS/CROCO/OUTPUT/Dublin/FC/STATIONS/"
+
+# NAS path to CROCO output HINDCAST files
+hchis="/home/NAS/CROCO/OUTPUT/Dublin/HC/HISTORY/"
+hcavg="/home/NAS/CROCO/OUTPUT/Dublin/HC/AVERAGES/"
+
+# NAS path to CROCO output files for THREDDS
+agghis="/home/NAS/CROCO/OUTPUT/Dublin/AGGREGATE/HISTORY/"
+aggavg="/home/NAS/CROCO/OUTPUT/Dublin/AGGREGATE/AVERAGES/"
+aggod="/home/NAS/CROCO/OUTPUT/Dublin/AGGREGATE/OPENDRIFT/"
+
+# THREDDS path to publish files into 
+threddshis="/opt/romsdata/roms_data/dublin_history/"
+threddsavg="/opt/romsdata/roms_data/dublin_averages/"
+threddsod="/opt/romsdata/roms_data/dublin_opendrift/"
+
+# Python launcher (used for renaming CROCO history files)
+PYEXE="/home/matlab/miniconda3/envs/galway/bin/python"
+
+# HPC credentials (username, password and IP). 
+username="model"
+password="p4ssw0rd"
+ip="10.0.5.39"
+# HPC CROCO directory
+hpcdir="/home/model/Operational/CROCO/configs/Dublin-FC/"
+
+# Prefix for renaming CROCO history files
+basename="DUBLIN_"
+# Date for baseline reference CROCO time
+reference="19680523"
+
+# Number of days before today to keep to publish on THREDDS
+N=30
+
+# Longitude and latitude to plot history
+hislon=-6.1067
+hislat=53.3305

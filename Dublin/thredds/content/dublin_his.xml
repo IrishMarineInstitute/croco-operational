@@ -1,0 +1,20 @@
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        name="Forecast">
+<service name="multiService" serviceType="Compound" base="">
+<service name="standard­dods" serviceType="OPENDAP" base="/thredds/dodsC/"/>
+<service name="fileServer" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+</service>
+
+<datasetScan name="DUBLIN-HISTORY" path="DUBLIN-HISTORY" location="/opt/romsdata/croco/dublin/HISTORY">
+<metadata inherited="true">
+<serviceName>multiService</serviceName>
+</metadata>
+<filter>
+<include wildcard="DUBLIN_HIS_*.nc" />
+</filter>
+</datasetScan>
+
+
+</catalog>
+

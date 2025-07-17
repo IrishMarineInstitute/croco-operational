@@ -1,0 +1,354 @@
+! 
+! Marine Institute CROCO Operational Input Parameters
+!
+!========================================================================
+!   Copyright (C) 2025 Marine Institute
+!===================================================== Diego Pereiro ====
+!
+!       This is the input configuration file for options to set up a CROCO 
+! Operational model. Any comment lines are allowed and  must begin with an
+! exclamation mark (!) in column one.  Comments may appear to the right of 
+! a parameter specification to improve documentation. Blank lines are also
+! allowed and ignored. 
+!========================================================================
+
+! Application title
+title DUBLIN
+
+! Set current date as YYYYMMDD. If invalid format, "today" is assumed
+mydate ToDaY
+
+! Reference time offset for CROCO. Use YYYYMMDD format
+offset 19680523 
+
+! Specify if CROCO is meant to run together with PISCES 
+PISCES T 
+
+! Hindcast start and end dates (in days from last midnight)
+HCi -8
+HCe -1
+
+! Forecast start and end dates (in days from last midnight)
+FCi 1 
+FCe 4 
+
+! Hindcasts are meant to run weekly, while forecasts run daily.
+! Here, decide which day of the week to run the hindcast.
+! Use "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" OR "Sun".
+HCwd Tue 
+
+! Set model time step [s]
+timestep 12
+
+!========================================================================
+!   Copernicus Download Options
+!========================================================================
+
+! CMEMS credentials
+username ********
+password ******** 
+
+! Specify the Copernicus datasets to download. You may extend the list
+! below as required for your CROCO configuration, but you should keep 
+! proper naming of the keywords following the convention "DATASET-N".
+! This allows to download a maximum of ten Copernicus datasets.
+
+! After the CMEMS Dataset ID, a number specifies if an offset should be 
+! added to the time array in the downloaded file. This number is in hours,
+! so e.g. 0.5 hours is 30 minutes. This is used to correct the time in
+! time-averaged fields, where it seems more appropriate that the time 
+! refers to the center of the averaged period.
+!
+! For example, User Manuals of daily products explain that daily-averaged
+! fields are averaged over a 25-hour centered at noon. However, when the
+! files are downloaded, the dates do not have a time, so they are referring
+! to midnight instead. To correct this, +12 hours should be added, and this
+! is specified here. 
+  
+DATASET-0 cmems_mod_ibi_phy_anfc_0.027deg-2D_PT15M-i  0    ! Sea level
+DATASET-1 cmems_mod_ibi_phy_anfc_0.027deg-2D_PT1H-m   0.5  ! Barotropic velocities
+DATASET-2 cmems_mod_ibi_phy_anfc_0.027deg-3D_P1D-m   12    ! Tracers
+DATASET-3 cmems_mod_ibi_bgc_anfc_0.027deg-3D_P1D-m   12    ! Biogeochemistry 
+
+! Variables to download from Copernicus. Each row corresponds to the ocean
+! variable in the comment at the end of the line. Use Y (yes) or N (no) to
+! specify whether you are interested or not in that ocean variable. This is
+! followed by an integer, telling which DATASET above contains the requested
+! parameter. Finally,specify the variable name in the Copernicus NetCDF.
+! For example:
+!
+! zeta  Y 0 zos
+!
+! downloads the sea level from DATASET-0 with NetCDF variable name 'zos'.
+! If you aren't interested in a variable, use simply N.
+!
+! After the variable name, there is T (true) or F (false) flag, to specify
+! if time extension needs to be applied to this variable. Time extension is
+! used to ensure that the downloaded NetCDF from CMEMS covers the whole 
+! period of interest (for example, the entire forecast length).
+
+zeta   Y 0 zos    F ! Sea level
+ubar   Y 1 ubar   F ! Barotropic velocity, eastward component
+vbar   Y 1 vbar   F ! Barotropic velocity, northward component
+u      N            ! u-component of seawater velocity
+v      N            ! v-component of seawater velocity
+temp   Y 2 thetao F ! Seawater temperature
+salt   Y 2 so     F ! Seawater salinity
+
+NH4  Y 3 nh4      T ! Ammonia (used for Total Alkalinity calculation)
+DIC  Y 3 dissic   T ! Dissolved inorganic carbon
+TALK Y 3 talk     T ! Total alkalinity (calculated, not downloaded)
+FER  Y 3 fe       T ! Iron
+O2   Y 3 o2       T !  Oxygen
+NO3  Y 3 no3      T ! Nitrate
+PO4  Y 3 po4      T ! Phosphate
+Si   Y 3 si       T ! Silicon
+pH   Y 3 ph       T ! pH (used for Total Alkalinity calculation)
+
+!   Sometimes,  each ocean variable comes at different time resolutions in
+! CMEMS. However, the boundary forcing file must have only ONE unique time 
+! dimension, shared by all variables. Here, define the "master" variable,
+! the one that defines the length of the time dimension. It must be one of
+! the variables selected above.
+!
+! This does not apply to PISCES variables, which can have their own time
+! array (e.g. daily frequency).
+
+master zeta 
+
+! Time range to download. This can be used both for hindcast and forecast.
+days-ahead 4 
+days-back 10 
+
+! Boundaries of the area to download
+west  -6.3
+east  -5.9
+south 53.2
+north 53.5
+
+! Container filesystem path to download Copernicus files to
+cmemspath ../data/Operational/CROCO/INPUT/Dublin/HC/IBI
+
+!========================================================================
+!   Make Boundary Options 
+!========================================================================
+
+! Set open boundaries
+obc 1 1 1 0 ! (S, E, N, W) 
+
+! Vertical coordinate parameters
+Vtransform 2 ! Vertical transformation equation
+theta_s    0 ! Surface stretching control parameter
+theta_b    0 ! Bottom stretching control parameter
+hc      1e16 ! Critical depth
+N         12 ! Number of vertical levels
+
+! Set input grid file name
+grdname croco_grd.nc
+
+! Set output boundary forcing file name
+bryname croco_bry.nc
+
+! Set cycle length (generally 0 for real-time runs)
+cycle 0
+
+! Container filesystem path to save CROCO HINDCAST input forcing files
+hindpath ../data/Operational/CROCO/INPUT/Dublin/HC
+
+! Temperature offset
+tempOffset 0.3 ! Celsius
+
+! Salinity offset
+saltOffset 1.4 ! PSU
+
+! Sea level offset
+zetaOffset 2.9677 ! m
+
+! Dissolved inorganic carbon factor for units conversion (if needed)
+dicFactor 1000.0 ! mol m-3 to mmol m-3
+! Total alkalinity factor for units conversion (if needed)
+talkFactor 1000.0 ! mol m-3 to mmol m-3
+
+!========================================================================
+!   Download ECMWF Options 
+!========================================================================
+
+! Atmospheric forcing is derived from the European Centre for Medium-
+! Range Weather Forecasts. Data is provided by MetEireann and the options
+! below are set to configure the download process.
+
+! Marine Institute SFTP credentials (HIDE IN GITHUB REPOSITORY!)
+ftpuser scriptsrvc
+ftppswd ********
+ftphost ********
+
+! Path to download raw GRIB files to
+metpath ../data/Operational/CROCO/INPUT/MET/
+
+! ECMWF grid for bulk NetCDF forcing files
+ECMWF_W -31 ! Western boundary  [deg east]
+ECMWF_E  10 ! Eastern boundary  [deg east]
+ECMWF_S  36 ! Southern boundary [deg north]
+ECMWF_N  65 ! Northern boundary [deg north]
+
+ECMWF_DH 0.1 ! Grid resolution [degrees]
+
+!========================================================================
+!   Make River Options 
+!========================================================================
+
+! It is necessary to create a river archive with long-term data during the
+! lifetime of the operational model. This is because some data providers
+! like ESB online provide the latest flow readings (e.g. latest 30 hours 
+! for the Lee River), which isn't enough to run a weekly hindcast. 
+
+! Container filesystem path to save river archive
+archivepath ../data/Operational/CROCO/INPUT/Dublin/Rivers
+
+! Start date for long-term river archive
+idateArchive 20250101
+! End date for long-term river archive 
+edateArchive 20400101
+
+! Container filesystem path to download river files to
+riverspath ../data/Operational/CROCO/INPUT/Dublin/HC/Rivers
+
+! Three possible data sources are considered here: Office of Public Works
+! Electricity Supply Board and Environmental Protection Agency.
+
+! Office of Public Works (OPW). You may extend the list below as required,
+! but  you  should keep proper  naming  of the  keywords using  convention 
+! "OPW-NNN".  This allows to select up to one thousand  OPW stations.  For 
+! each river, specify the Office of Public Works station number.
+
+! You should pass the following information in this order:  OPW station 
+! number, followed by: "Q" to download flow, "S" to download water level
+! (rating curve MUST be provided), "T" to download water temperature. 
+
+OPW-000 09001 T ! Leixlip (Liffey)
+OPW-001 09112 T ! Clonee Weir (Tolka)
+OPW-002 09369 T ! Anglesea Road (Dodder)
+
+! Environmental Protection Agency  (EPA).  Follow same instructions but
+! here, in addition to the station number, you should add a zone prefix
+! too. You can find the right prefix and station number by hovering
+! the mouse over the download link on the EPA website. Use "Q" to download 
+! flow, "S" to download water level (rating curve MUST be provided) or 
+! "T" to download water temperature.
+
+EPA-000 DUB/09010 Q ! Waldron's Bridge (Dodder)
+EPA-001 DUB/09037 Q ! Botanic Gardens (Tolka)
+
+! Electricity Supply Board (ESB). Follow same instructions. Here, you
+! should add the river name and PDF file name. This can only be 'Q',
+! (flow), so no need to indicate it. 
+
+ESB-000 Liffey/06-Leixlip-Flow.pdf             ! Liffey
+
+! Constant flows (CON). Used for freshwater sources where little 
+! information is available, such as an annual average. Simply
+! provide the value of the flow in m3 s-1.
+
+CON-000 5 ! Ringsend
+
+! Salinity for rivers
+riverSalt 0.12
+! Dissolved inorganic carbon for rivers
+riverDIC 300
+! Total alkalinity for rivers
+riverTALK 300
+
+! Set CROCO river information. Add as many rivers as needed using keywords 
+! like RIVER-NNN, followed by: 
+!     (1) River name in capitals, 
+!     (2) and (3) the I and J river grid indexes, same as in croco.in, 
+!     (4) and (5), direction and sense, same as in croco.in
+!     (6) number of grid cells this river is split into. Sometimes, the same
+! river flow must be split into several grid cells. In this case, add a new
+! line for each grid cell, and use this integer to indicate the total number 
+! of grid cells for this river. Example:
+!
+! RIVER-000 CORRIB1  167 281 0 1 3 
+! RIVER-001 CORRIB2  168 281 0 1 3
+! RIVER-002 CORRIB3  169 281 0 1 3
+!
+! In this example, the river is split into 3 cells. This number is used to
+! divide the flow evenly across multiple cells.
+!
+! Finally, append as many datasets as needed for this river. To refer to 
+! these datasets, you must use the same keywords as above for OPW-***,
+! EPA-*** and ESB-***. Tipically, you would need at least two datasets 
+! for each river: flow and temperature. Make sure each river below has
+! both! 
+!
+! ADDING UP SEVERAL FLOWS AT THE SAME GRID CELL. For this, use just one line
+! indicating the I, J grid cell, direction, sense and 1 grid cell. Finally,
+! add as many datasetets (OPW-***, EPA-***, ESB-***) as needed for the total
+! flow. The program will add these up to get a total.
+
+RIVER-000     TOLKA  12 139 0 1 1 OPW-001 EPA-001
+RIVER-001    LIFFEY   1 127 0 1 1 OPW-000 ESB-000
+RIVER-002    DODDER  13 122 1 1 1 OPW-002 EPA-000
+RIVER-003  RINGSEND  34 122 1 1 1 CON-000 OPW-000
+
+! RATING CURVES FOR CALCULATION OF RIVER FLOW FROM WATER LEVEL.
+! For every river above where water level "S" is downloaded instead of
+! flow "Q", indicate the rating curve here below. Use the river name
+! uppercase followed by a number (0-9) to add as many rating curves as
+! needed. The required parameters are as follows: 
+!
+!     STAFF (m): offset to convert OD Malin to staff level
+!
+!     UPP (m): upper water level threhsold for given rating curve. It
+! is required that rating curves cover the whole range of water levels.
+! For this, it is advised to use "Inf" for the highest (or unique) rating
+! curve. The rating curve will be used for any water levels below the 
+! threshold indicated here. 
+!
+!     s, A, k: rating curve parameters as per Q(S) = A * (S + s) ^ k
+!
+!     DT (minutes): Used for tidal corrections. The software will 
+! calculate daily averages using the calculated flows at low tides. DT is
+! the interval around (+/-DT) low tide time to subset calculated flows
+! and determine the daily averages.
+!  
+!                   IMPORTANT: In order to use this functionality, a
+! tidal state file named "{NAME}-TIDES.csv"  must be provided at the 
+! base directory of the RIVERS container. An example is provided for
+! the Corrib (CORRIB-TIDES.csv).
+!
+! IMPORTANT: for these keywords, use the same river file name as 
+! in the RIVER- entries, but uppercase.
+
+! NAME-N    STAFF   UPP   s     A      k     DT
+! CORRIB-0     0.823  Inf   0    34.125  2.816 30
+! DUNKELLIN-0 -1.152 1.05  -0.06 13      1.96  60
+! DUNKELLIN-1 -1.152  Inf  -0.06 13      2.10  60
+
+! EXPONENTIAL FUNCTIONS FOR NUTRIENT ESTIMATION FROM FLOW. Continuous
+! nutrient observations from rivers tend to be sparse or non-existent.
+! Nutrient concentrations can be -very roughly- estimated from river
+! flow, using an exponential function fit [X] = A * Q ^ (k+1), where
+! [X] is nutrient concentration [mmol m-3], Q is river flow [m3], and
+! A, k are empirical parameters to determine through exponential fit.
+
+! NAME-NUTRIENT     A          k
+TOLKA-NO3      109.32     -0.650
+TOLKA-PO4        1.3127   -0.400
+TOLKA-Si       100.63     -0.742
+TOLKA-FER        1.6594   -1.489
+
+LIFFEY-NO3      81.52     -0.704
+LIFFEY-PO4       3.7357   -1.752
+LIFFEY-Si       64.955    -0.782
+LIFFEY-FER       5.2277   -1.505
+
+DODDER-NO3      77.285    -0.615
+DODDER-PO4       0.481    -0.265
+DODDER-Si      134.07     -1.210
+DODDER-FER       1.7173   -0.323
+
+RINGSEND-NO3  2998.5      -1.000 ! Constant = A mmol m-3
+RINGSEND-PO4   170.5      -1.000 ! Constant = A mmol m-3
+RINGSEND-Si      0.0      -1.000 ! Zero
+RINGSEND-FER     0.0      -1.000 ! Zero

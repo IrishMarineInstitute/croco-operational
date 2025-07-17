@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="Marine Institute Thredds Catalog"
+         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0
+           http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.6.xsd">
+
+
+<service name="MI" serviceType="OpenDAP" base="/thredds/dodsC/" />
+
+<dataset name="DUBLIN-GRID">
+<catalogRef xlink:href='dublin_grd.xml' xlink:title='DUBLIN-GRID' name=''/> 
+</dataset>
+
+<dataset name="DUBLIN-AVERAGES">
+<catalogRef xlink:href='dublin_avg.xml' xlink:title='DUBLIN-AVERAGES' name=''/> 
+<catalogRef xlink:href='averages_aggregate.xml' xlink:title='AVERAGES-AGGREGATE' name=''/> 
+</dataset>
+
+<dataset name="DUBLIN-HISTORY">
+<catalogRef xlink:href='dublin_his.xml' xlink:title='DUBLIN-HISTORY' name=''/> 
+<catalogRef xlink:href='history_aggregate.xml' xlink:title='HISTORY-AGGREGATE' name=''/> 
+</dataset>
+
+<dataset name="DUBLIN-OPENDRIFT">
+<catalogRef xlink:href='dublin_opendrift.xml' xlink:title='DUBLIN-OPENDRIFT' name=''/> 
+<catalogRef xlink:href='opendrift_aggregate.xml' xlink:title='OPENDRIFT-AGGREGATE' name=''/> 
+</dataset>
+
+</catalog>

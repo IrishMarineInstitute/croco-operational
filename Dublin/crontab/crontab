@@ -1,0 +1,3 @@
+*/20 * * * * /home/matlab/croco-op/Dublin/alerts/checklogs.sh
+30 16 * *  Tue /home/matlab/croco-op/Dublin/run/HC/hindcast.sh
+30 21 * * * /home/matlab/croco-op/Dublin/run/FC/forecast.sh

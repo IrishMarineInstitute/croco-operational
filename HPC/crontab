@@ -1,0 +1,2 @@
+*/5 * * * * /home/model/Operational/CROCO/configs/Dublin-HC/run.sh
+*/5 * * * * /home/model/Operational/CROCO/configs/Dublin-FC/run.sh

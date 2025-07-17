@@ -1,0 +1,4 @@
+# Create runoff forcing file for HINDCAST 
+0 15  * * Tue /usr/local/bin/python /root/main.py
+# Create runoff forcing file for FORECAST 
+45 19  * * * /usr/local/bin/python /root/main.py

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# NAS path to CROCO input files for archiving
+inputdir="/home/NAS/CROCO/INPUT/Dublin/HC/"
+# NAS path to CROCO output files for archiving
+outputhis="/home/NAS/CROCO/OUTPUT/Dublin/HC/HISTORY/"
+outputavg="/home/NAS/CROCO/OUTPUT/Dublin/HC/AVERAGES/"
+outputstn="/home/NAS/CROCO/OUTPUT/Dublin/HC/STATIONS/"
+
+# Python launcher (used for renaming CROCO history files)
+PYEXE="/home/matlab/miniconda3/envs/galway/bin/python"
+
+# HPC credentials (username, password and IP). 
+username="model"
+password="p4ssw0rd"
+ip="10.0.5.39"
+# HPC CROCO directory
+hpcdir="/home/model/Operational/CROCO/configs/Dublin-HC/"
+
+# Prefix for renaming CROCO history files
+basename="DUBLIN_"
+# Date for baseline reference CROCO time
+reference="19680523"
+
+# Longitude and latitude to plot stations
+stlon=-6.0682
+stlat=53.3948
+
+# Longitude and latitude to plot history
+hislon=-6.1067
+hislat=53.3305

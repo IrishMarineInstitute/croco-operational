@@ -1,0 +1,5 @@
+copernicusmarine==2.0.1
+gsw
+netCDF4==1.7.2
+PyCO2SYS
+scipy

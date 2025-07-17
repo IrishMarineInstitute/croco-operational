@@ -1,0 +1,4 @@
+cfgrib
+eccodes
+netCDF4
+xarray

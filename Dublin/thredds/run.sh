@@ -1,0 +1,25 @@
+docker run -d --name=threddstest -p 8096:8080 \
+    -v $(pwd)/content/catalog.xml:/usr/local/tomcat/content/thredds/catalog.xml \
+    -v $(pwd)/content/dublin_grd.xml:/usr/local/tomcat/content/thredds/dublin_grd.xml \
+    -v $(pwd)/content/dublin_avg.xml:/usr/local/tomcat/content/thredds/dublin_avg.xml \
+    -v $(pwd)/content/dublin_his.xml:/usr/local/tomcat/content/thredds/dublin_his.xml \
+    -v $(pwd)/content/dublin_opendrift.xml:/usr/local/tomcat/content/thredds/dublin_opendrift.xml \
+    -v $(pwd)/content/averages_aggregate.xml:/usr/local/tomcat/content/thredds/averages_aggregate.xml \
+    -v $(pwd)/content/history_aggregate.xml:/usr/local/tomcat/content/thredds/history_aggregate.xml \
+    -v $(pwd)/content/opendrift_aggregate.xml:/usr/local/tomcat/content/thredds/opendrift_aggregate.xml \
+    -v /mnt/SYN_FS/thredds/CROCO/OUTPUT/Dublin/AGGREGATE/AVERAGES:/opt/romsdata/croco/dublin/AVERAGES/:ro \
+    -v /mnt/SYN_FS/thredds/CROCO/OUTPUT/Dublin/AGGREGATE/GRID:/opt/romsdata/croco/dublin/GRID/:ro \
+    -v /mnt/SYN_FS/thredds/CROCO/OUTPUT/Dublin/AGGREGATE/HISTORY:/opt/romsdata/croco/dublin/HISTORY/:ro \
+    -v /mnt/SYN_FS/thredds/CROCO/OUTPUT/Dublin/AGGREGATE/OPENDRIFT:/opt/romsdata/croco/dublin/OPENDRIFT/:ro \
+    -v $(pwd)/tomcatLogs:/usr/local/tomcat/logs \
+    -v $(pwd)/threddsLogs:/usr/local/tomcat/content/thredds/logs/ \
+    -e TDS_CONTENT_ROOT_PATH=/usr/local/tomcat/content \
+    -e THREDDS_XMX_SIZE=4G \
+    -e THREDDS_XMS_SIZE=4G \
+    -e TDM_PW=CHANGEME! \
+    -e TDS_HOST=http://10.0.5.77:8096/ \
+    -e TDM_XMX_SIZE=6G \
+    -e TDM_XMS_SIZE=1G \
+    -e TOMCAT_USER_ID=1000 \
+    -e TOMCAT_GROUP_ID=1000 \
+  unidata/thredds-docker:5.5

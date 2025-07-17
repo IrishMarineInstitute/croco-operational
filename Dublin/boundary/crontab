@@ -1,0 +1,4 @@
+# Create boundary forcing file for HINDCAST 
+10 15  * * Tue /usr/local/bin/python /root/main.py
+# Create boundary forcing file for FORECAST 
+30 19  * * * /usr/local/bin/python /root/main.py
