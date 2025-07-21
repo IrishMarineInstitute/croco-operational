@@ -144,6 +144,6 @@ ssh thredds rm "${threddsod}*.nc"
 scp ${aggod}*.nc thredds:"${threddsod}"
 
 # Clean FC directory
-cd $outputhis; ls *.nc -t | tail -n +10 | xargs rm --
-cd $outputavg; ls *.nc -t | tail -n +10 | xargs rm --
-cd $outputstn; ls *.nc -t | tail -n +10 | xargs rm --
+cd $outputhis; ls *.nc -t | tail -n +14 | xargs rm --
+cd $outputavg; ls *.nc -t | tail -n +14 | xargs rm --
+cd $outputstn; ls *.nc -t | tail -n +14 | xargs rm --
