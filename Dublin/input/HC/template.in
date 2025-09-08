@@ -30,7 +30,7 @@ climatology: filename
 boundary: filename
     INPUT/croco_bry.nc
 initial: NRREC / filename
-          1 
+          2 
     INPUT/croco_ini.nc
 restart:          NRST, NRPFRST / filename
                    7200    2 

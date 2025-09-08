@@ -191,7 +191,7 @@ def check_history(path, basename, units, lat, lon):
     files = sorted(glob.glob((path + basename + 'HIS_*.nc')))
     
     # Read stations coordinates from first file
-    with Dataset(files[0], 'r') as nc:
+    with Dataset('croco_grd.nc', 'r') as nc:
         # Read longitude
         lonp = nc.variables['lon_rho'][0,:]
         # Read latitude

@@ -294,7 +294,7 @@ def make_boundary():
         today = date.today()
 
     # Remove NetCDF files older than 2 days
-    clean(config.get('hindpath'), 2)
+    clean(config.get('hindpath') + '/', 2)
 
     localpath = config.get('hindpath') + '/' + today.strftime('%Y%m%d') + '/'
     if not os.path.isdir(localpath):
